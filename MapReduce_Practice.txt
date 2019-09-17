@@ -1,0 +1,106 @@
+#################   SQL  Queries   ##############
+
+1. 
+select
+	count(amount)
+from 
+	transactions_data;
+
+	
+#############################################################################
+2. 
+select 
+	customer_id, reducer sum(amount)map
+from 
+	transactions_data
+group by 
+	customer_id;  shuffle and sort
+	
+
+# MapReduce #	
+map input : each recrod
+map output : custid, amount
+shuffle and sort output:custid, <3,2,4,5,1>
+reducer output: custid, 15
+
+# Spark #
+cust_trans=sc.parallelize("file path")
+cust_sales=cust_trans.map(lambda x:(x.custid,x.amount))     ###MapFUNCTION####
+cust_reduce=cust_sales.reduceByKey()                        ###Reducer###
+
+# Scala #
+cust_group=cust_sales.groupByKey()
+cust_reduce=cust_group.map(lambda (k,v):(k,sum(v))
+
+# Python #
+df.groupby('custid').agg({'amount':'sum'}).reset_index()
+
+# R #
+df %>% groupby(custid) %>% summarise(amount:sum)
+
+#############################################################################
+
+3.
+select 
+	customer_id, store, sum(amount)
+from transactions_data
+	group by 
+	(store, customer_id)
+
+# MapReduce #
+map input : each record
+map output : custid,store_id, amount          ( input for shuffle and sort )
+shuffle and sort output : custid,store_id,[10,23,12,5]      ( reducer input )
+reducer output : custid, store_id, 50
+				uniq(custid), uniq(store_id), 40
+				 uniq(custid), (store_id), 35
+#############################################################################
+	
+4.
+select 
+	amount, count(amount)
+from transactions_data
+	order by
+		(sum(amount))
+		
+select 
+	count(*)
+from 
+	transactions_data;
+
+
+	
+##############################################################################
+	
+5.
+select 
+	customer_id,  amount
+from transactions_data
+	group by
+		(customer_id)
+
+# MapReduce #
+map input : each record
+map output : custid,amount      ( input for shuffle and sort )
+shuffle and sort output : custid,[12,34,42,23,20]
+reducer output : custid,42
+##############################################################################
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
